@@ -6,9 +6,9 @@ import '@openzeppelin/contracts/token/ERC20/ERC20.sol';
 contract TToken is ERC20 {
   constructor(
     string memory name, 
-    string memory ticker
+    string memory symbol
   ) 
-    ERC20(name, ticker) 
+    ERC20(name, symbol) 
   {
     _mint(msg.sender, 1);
   }
