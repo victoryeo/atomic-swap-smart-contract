@@ -29,7 +29,7 @@ let htlcInst = new web3.eth.Contract(
   htlcContract.abi, HTLC_CONTRACT_ADDRESS
 )
 
-async function setup_as() {
+async function setupAS() {
   let accounts: string[] = await web3.eth.getAccounts()
   console.log('account0', accounts[0])
   console.log('account1', accounts[1])
@@ -55,7 +55,7 @@ async function setup_as() {
   } 
 }
 
-setup_as()
+setupAS()
     .then(() => process.exit(0))
     .catch((error) => {
         console.error(error)
