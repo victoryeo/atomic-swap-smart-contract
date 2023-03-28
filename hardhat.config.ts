@@ -35,6 +35,9 @@ const config: HardhatUserConfig = {
     deployer: {
         default: 0,
     },
+    recipient: {
+        default: 1
+    }
   },
 };
 
