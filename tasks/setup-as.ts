@@ -10,25 +10,42 @@ task("setup-as", "Setup Atomic Swap")
     { ethers }
   ) => {
     try {
-      const [deployer] = await ethers.getSigners();
-      const ttokenContract = new ethers.Contract(ttokenAddress, TToken.abi);
-      const ttokenContractWithSigner = ttokenContract.connect(deployer);
+      const [deployer, recipient] = await ethers.getSigners();
+      console.log("deployer", deployer.address)
+      console.log("recipient", recipient.address)
 
-
-      let nonce = await deployer.getTransactionCount()
-      console.log("Nonce", nonce)
-      const tx = await ttokenContractWithSigner.approve(htlcAddress, 1, { nonce })
-      await tx.wait()
-      console.log('Successfully approve htlc address', htlcAddress);
+      const ttokenContractSigner = new ethers.Contract(ttokenAddress, TToken.abi, deployer);
+      const ttokenContractRecipient = new ethers.Contract(ttokenAddress, TToken.abi, recipient);
 
       const htlcContract = new ethers.Contract(htlcAddress, HTLC.abi)
       const htlcContractWithSigner = htlcContract.connect(deployer)
+      const htlcContractWithRecipient = htlcContract.connect(recipient)
+
+      //approve
+      let nonce = await deployer.getTransactionCount()
+      console.log("Nonce", nonce)
+      const tx = await ttokenContractSigner.approve(htlcAddress, 1, { nonce })
+      await tx.wait()
+      console.log('Successfully approve htlc address', htlcAddress);
+
+      //fund
       nonce = await deployer.getTransactionCount()
       console.log("Nonce", nonce)
       const tx1 = await htlcContractWithSigner.fund({nonce})
       await tx1.wait()
-      console.log('Successfully fund token address', ttokenAddress);
+      console.log('Successfully fund htlc contract address', htlcAddress);
 
+      //withdraw
+      nonce = await deployer.getTransactionCount()
+      console.log("Nonce", nonce)
+      const tx2 = await htlcContractWithSigner.withdraw("secret ", {nonce})
+      await tx2.wait()
+      console.log('Successfully withdraw to', recipient.address);
+
+      //check balance
+      const balance = await ttokenContractRecipient.balanceOf(recipient
+        .address)
+      console.log(balance)
     } catch ({ message }) {
       console.error(message)
     }
