@@ -38,7 +38,7 @@ task("setup-as", "Setup Atomic Swap")
       //withdraw
       nonce = await deployer.getTransactionCount()
       console.log("Nonce", nonce)
-      const tx2 = await htlcContractWithSigner.withdraw("secret ", {nonce})
+      const tx2 = await htlcContractWithSigner.withdraw("secret", {nonce})
       await tx2.wait()
       console.log('Successfully withdraw to', recipient.address);
 
