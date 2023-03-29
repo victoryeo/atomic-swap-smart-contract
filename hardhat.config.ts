@@ -27,6 +27,9 @@ const config: HardhatUserConfig = {
     hardhat: {
         chainId: 31337,
     },
+    local: {
+      url: "http://127.0.0.1:8545",
+    },
     ganache: {
       url: "http://127.0.0.1:9545",
     },
