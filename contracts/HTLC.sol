@@ -2,16 +2,22 @@
 pragma solidity ^0.8.17;
 
 import '@openzeppelin/contracts/token/ERC20/IERC20.sol';
+import "hardhat/console.sol";
 
 contract HTLC {
   uint public startTime;
   uint public lockTime = 10000 seconds;
-  string public secret;
+  string public secret = "secret";
   address public recipient;
   address public owner;
   bytes32 public hashLockKey;
   uint public amount;
   IERC20 public token;
+
+  event HashValue (
+    bytes32 a,
+    bytes32 b
+  );
 
   constructor(address _recipient,
       address _token,
@@ -21,12 +27,15 @@ contract HTLC {
     owner = msg.sender;
     amount = _amount;
     token = IERC20(_token);
-    hashLockKey = _hashLockKey;
+    hashLockKey = keccak256(abi.encodePacked(secret));
   }
 
   modifier hashLockMatches(string memory _x) {
+    console.logBytes32(hashLockKey);
+    console.logBytes32(keccak256(abi.encodePacked(_x)));
+    emit HashValue(hashLockKey, keccak256(abi.encodePacked(_x)));
     require(
-        hashLockKey == sha256(abi.encodePacked(_x)),
+        hashLockKey == keccak256(abi.encodePacked(_x)),
         "hashlock key does not match");
     _;
   }
@@ -42,9 +51,6 @@ contract HTLC {
   }
 
   function withdraw(string memory _secret) hashLockMatches(_secret) external {
-    require(
-      keccak256(abi.encodePacked(_secret)) == hashLockKey,
-      'wrong secret');
     secret = _secret;
     token.transfer(recipient, amount);
   }
