@@ -23,7 +23,7 @@ const func: DeployFunction = async function ({
     const hashKey = crypto.createHash('sha256', "secret").digest('hex')
     console.log("token address", ttoken.address)
     console.log("hashkey", hashKey)
-    args[0] = recipient
+    args[0] = recipient  // htlc recipient address
     args[1] = ttoken.address
     args[2] = 1
     args[3] = '0x'+hashKey

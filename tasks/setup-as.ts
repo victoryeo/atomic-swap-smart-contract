@@ -14,35 +14,35 @@ task("setup-as", "Setup Atomic Swap")
       console.log("deployer", deployer.address)
       console.log("recipient", recipient.address)
 
-      const ttokenContractSigner = new ethers.Contract(ttokenAddress, TToken.abi, deployer);
+      const ttokenContractDeployer = new ethers.Contract(ttokenAddress, TToken.abi, deployer);
       const ttokenContractRecipient = new ethers.Contract(ttokenAddress, TToken.abi, recipient);
 
       const htlcContract = new ethers.Contract(htlcAddress, HTLC.abi)
-      const htlcContractWithSigner = htlcContract.connect(deployer)
+      const htlcContractWithDeployer = htlcContract.connect(deployer)
       const htlcContractWithRecipient = htlcContract.connect(recipient)
 
       //approve
       let nonce = await deployer.getTransactionCount()
       console.log("Nonce", nonce)
-      const tx = await ttokenContractSigner.approve(htlcAddress, 1, { nonce })
+      const tx = await ttokenContractDeployer.approve(htlcAddress, 1, { nonce })
       await tx.wait()
       console.log('Successfully approve htlc address', htlcAddress);
 
       //fund
       nonce = await deployer.getTransactionCount()
       console.log("Nonce", nonce)
-      const tx1 = await htlcContractWithSigner.fund({nonce})
+      const tx1 = await htlcContractWithDeployer.fund({nonce})
       await tx1.wait()
       console.log('Successfully fund htlc contract address', htlcAddress);
 
-      //withdraw
-      nonce = await deployer.getTransactionCount()
+      //withdraw to recipient (must supply the correct "secret")
+      nonce = await recipient.getTransactionCount()
       console.log("Nonce", nonce)
-      const tx2 = await htlcContractWithSigner.withdraw("secret", {nonce})
+      const tx2 = await htlcContractWithRecipient.withdraw("secret", {nonce})
       await tx2.wait()
       console.log('Successfully withdraw to', recipient.address);
 
-      //check balance
+      //check balance of recipient
       const balance = await ttokenContractRecipient.balanceOf(recipient
         .address)
       console.log(balance)
