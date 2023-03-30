@@ -9,6 +9,9 @@ dotenv.config()
 const GOERLI_RPC_URL = process.env.GOERLI_RPC_URL;
 const PRIVATE_KEY = process.env.PRIVATE_KEY ?? ""
 
+const MUMBAI_RPC_URL = process.env.MUMBAI_RPC_URL;
+const MNEMONIC = process.env.MNEMONIC;
+
 /**
  * @type import('hardhat/config').HardhatUserConfig
  */
@@ -33,6 +36,10 @@ const config: HardhatUserConfig = {
     },
     ganache: {
       url: "http://127.0.0.1:9545",
+    },
+    mumbai: {
+      url: MUMBAI_RPC_URL,
+      accounts: {mnemonic: MNEMONIC},
     },
     goerli: {
         chainId: 5,
