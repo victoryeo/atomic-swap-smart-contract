@@ -44,7 +44,7 @@ const config: HardhatUserConfig = {
     goerli: {
         chainId: 5,
         url: GOERLI_RPC_URL,
-        accounts: [PRIVATE_KEY]
+        accounts: {mnemonic: MNEMONIC},
     }
   },
   namedAccounts: {
