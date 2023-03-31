@@ -48,7 +48,7 @@ async function setupAS() {
     console.log(data0)
 
     // fund
-    const data1 = await htlcInst.methods.fund.send({from: accounts[0]})
+    const data1 = await htlcInst.methods.fund().send({from: accounts[0]})
     console.log(data1)
   } catch (err) {
     console.log(err)
