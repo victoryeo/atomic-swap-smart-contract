@@ -24,7 +24,7 @@ npx hardhat run scripts/setupAS_web3.ts
 npx hardhat deploy --network mumbai
 
 ### setup atomic swap on mumbai testnet
-npx hardhat setup-as --ttoken-address <<address>>  --htlc-address <<address>> --network  mumbai
+npx hardhat setup-as --ttoken-address "address" --htlc-address "address" --network  mumbai
 
 ### deploy smart contract to hardhat network
 npx hardhat deploy
