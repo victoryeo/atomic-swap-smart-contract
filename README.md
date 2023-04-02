@@ -17,7 +17,7 @@ npx hardhat deploy --network goerli
 
 ### setup atomic swap on goerli testnet (tested)
 npx hardhat setup-as --ttoken-address 0x222D8Ba538D091b0875ed19B4aD52A9c7F5fDaB1  --htlc-address 0x1b4F8517C6B1D6a0D47D67bE6e95F169e7293E73 --network  goerli
-* or  
+  or  
 npx hardhat run scripts/setupAS_web3.ts
 
 ### deploy smart contract to mumbai testnet
