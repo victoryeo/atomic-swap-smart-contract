@@ -50,6 +50,10 @@ async function setupAS() {
     // fund
     const data1 = await htlcInst.methods.fund().send({from: accounts[0]})
     console.log(data1)
+
+    //withdraw to recipient (must supply the correct "secret")
+    const data2 = await htlcInst.methods.withdraw("secret").send({from: accounts[1]})
+    console.log(data2);
   } catch (err) {
     console.log(err)
   } 
