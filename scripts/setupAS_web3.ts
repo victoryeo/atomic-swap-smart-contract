@@ -54,6 +54,10 @@ async function setupAS() {
     //withdraw to recipient (must supply the correct "secret")
     const data2 = await htlcInst.methods.withdraw("secret").send({from: accounts[1]})
     console.log(data2);
+
+    //check balance of recipient
+    const balance = await ttokenInst.methods.balanceOf(accounts[1]).call()
+    console.log(balance)
   } catch (err) {
     console.log(err)
   } 
